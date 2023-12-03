@@ -45,8 +45,8 @@ class NewsAdapter : Adapter<NewsAdapter.ArticleViewHolder>() {
             tvTitle.text = currentArticle.title
             tvDescription.text = currentArticle.description
             tvPublishedAt.text = currentArticle.publishedAt
-            setOnItemClickListener {
-                onItemClickListener
+            root.setOnClickListener {
+                onItemClickListener?.let { it(currentArticle) }
             }
         }
     }

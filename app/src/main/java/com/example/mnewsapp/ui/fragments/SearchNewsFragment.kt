@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mnewsapp.R
 import com.example.mnewsapp.adapters.NewsAdapter
 import com.example.mnewsapp.databinding.FragmentSearchNewsBinding
 import com.example.mnewsapp.ui.NewsActivity
 import com.example.mnewsapp.ui.NewsViewModel
+import com.example.mnewsapp.ui.navigator
 import com.example.mnewsapp.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.example.mnewsapp.util.Resource
 import kotlinx.coroutines.Job
@@ -50,13 +50,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         setupRecyclerview()
 
         newsAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
-            }
-            findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment,
-                bundle
-            )
+            navigator().launchArticleFragment(it)
         }
 
         var job: Job? = null

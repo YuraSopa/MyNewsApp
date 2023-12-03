@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mnewsapp.R
 import com.example.mnewsapp.adapters.NewsAdapter
 import com.example.mnewsapp.databinding.FragmentBreakingNewsBinding
 import com.example.mnewsapp.ui.NewsActivity
 import com.example.mnewsapp.ui.NewsViewModel
+import com.example.mnewsapp.ui.navigator
 import com.example.mnewsapp.util.Resource
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
@@ -25,11 +25,13 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private val binding: FragmentBreakingNewsBinding
         get() = _binding ?: throw RuntimeException("$TAG is null")
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentBreakingNewsBinding.inflate(
             layoutInflater,
             container,
@@ -44,13 +46,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         setupRecyclerview()
 
         newsAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
-            }
-            findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_articleFragment,
-                bundle
-            )
+            navigator().launchArticleFragment(it)
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
@@ -95,5 +91,16 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+//        fun newInstance(articles: List<Article>): ArticleFragment {
+//
+//            val args = Bundle()
+//            args.putParcelable(EXTRA_ARTICLES, articles)
+//            val fragment = ArticleFragment()
+//            fragment.arguments = args
+//            return fragment
+//        }
     }
 }

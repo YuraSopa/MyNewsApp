@@ -2,15 +2,21 @@ package com.example.mnewsapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.example.mnewsapp.R
 import com.example.mnewsapp.databinding.ActivityNewsBinding
 import com.example.mnewsapp.db.ArticleDatabase
+import com.example.mnewsapp.models.Article
+import com.example.mnewsapp.models.NewsResponse
 import com.example.mnewsapp.repository.NewsRepository
+import com.example.mnewsapp.ui.fragments.ArticleFragment
+import com.example.mnewsapp.ui.fragments.BreakingNewsFragment
+import com.example.mnewsapp.ui.fragments.SavedNewsFragment
+import com.example.mnewsapp.ui.fragments.SearchNewsFragment
 
-class NewsActivity : AppCompatActivity() {
+class NewsActivity : AppCompatActivity(), Navigator {
 
     private val binding by lazy {
         ActivityNewsBinding.inflate(layoutInflater)
@@ -22,6 +28,7 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         val newsRepository = NewsRepository(ArticleDatabase(this))
         val newsViewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
         viewModel = ViewModelProvider(
@@ -29,12 +36,63 @@ class NewsActivity : AppCompatActivity() {
             newsViewModelProviderFactory
         )[NewsViewModel::class.java]
 
-//        val navController = findNavController(R.id.newsNavHostFragment)
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.newsNavHostFragment, BreakingNewsFragment())
+                .commit()
+        }
+
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
+//        val navController = navHostFragment.navController
 //        binding.bottomNavigationView.setupWithNavController(navController)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.breakingNewsFragment -> launchFragment(BreakingNewsFragment())
+                R.id.savedNewsFragment -> launchFragment(SavedNewsFragment())
+                R.id.searchNewsFragment -> launchFragment(SearchNewsFragment())
+                else -> {}
+            }
+            true
+        }
     }
+
+
+    override fun launchBreakingNewsFragment(articles: List<Article>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun launchSavedNewsFragment(newsResponse: NewsResponse) {
+        TODO("Not yet implemented")
+    }
+
+    override fun launchSearchNewsFragment() {
+        launchFragment(SearchNewsFragment())
+    }
+
+    override fun launchArticleFragment(article: Article) {
+        launchFragment(ArticleFragment.newInstance(article))
+    }
+
+    override fun goBack() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+
+            )
+            .addToBackStack(null)
+            .replace(R.id.newsNavHostFragment, fragment)
+            .commit()
+    }
+
 }
