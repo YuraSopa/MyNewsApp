@@ -3,13 +3,11 @@ package com.example.mnewsapp.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.mnewsapp.R
 import com.example.mnewsapp.databinding.ActivityNewsBinding
 import com.example.mnewsapp.db.ArticleDatabase
 import com.example.mnewsapp.models.Article
-import com.example.mnewsapp.models.NewsResponse
 import com.example.mnewsapp.repository.NewsRepository
 import com.example.mnewsapp.ui.fragments.ArticleFragment
 import com.example.mnewsapp.ui.fragments.BreakingNewsFragment
@@ -30,7 +28,7 @@ class NewsActivity : AppCompatActivity(), Navigator {
 
 
         val newsRepository = NewsRepository(ArticleDatabase(this))
-        val newsViewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
+        val newsViewModelProviderFactory = NewsViewModelProviderFactory(application, newsRepository)
         viewModel = ViewModelProvider(
             this,
             newsViewModelProviderFactory
@@ -64,9 +62,6 @@ class NewsActivity : AppCompatActivity(), Navigator {
         TODO("Not yet implemented")
     }
 
-    override fun launchSavedNewsFragment(newsResponse: NewsResponse) {
-        TODO("Not yet implemented")
-    }
 
     override fun launchSearchNewsFragment() {
         launchFragment(SearchNewsFragment())
@@ -76,9 +71,7 @@ class NewsActivity : AppCompatActivity(), Navigator {
         launchFragment(ArticleFragment.newInstance(article))
     }
 
-    override fun goBack() {
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-    }
+
 
     private fun launchFragment(fragment: Fragment) {
         supportFragmentManager
