@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class NewsResponse(
-    val articles: List<Article>,
+    val articles: MutableList<Article>,
     val status: String,
     val totalResults: Int
 ): Parcelable
