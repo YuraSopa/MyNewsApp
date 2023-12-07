@@ -57,7 +57,6 @@ class NewsActivity : AppCompatActivity(), Navigator {
         }
     }
 
-
     override fun launchBreakingNewsFragment(articles: List<Article>) {
         TODO("Not yet implemented")
     }
@@ -77,11 +76,10 @@ class NewsActivity : AppCompatActivity(), Navigator {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
                 R.anim.slide_in_right,
-                R.anim.slide_out_left
-
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
             )
             .addToBackStack(null)
             .replace(R.id.newsNavHostFragment, fragment)

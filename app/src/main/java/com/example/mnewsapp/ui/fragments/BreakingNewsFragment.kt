@@ -22,11 +22,11 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
-    private val TAG = "BreakingNewsFragment"
+    private val tag = "BreakingNewsFragment"
 
     private var _binding: FragmentBreakingNewsBinding? = null
     private val binding: FragmentBreakingNewsBinding
-        get() = _binding ?: throw RuntimeException("$TAG is null")
+        get() = _binding ?: throw RuntimeException("$tag is null")
 
 
     override fun onCreateView(

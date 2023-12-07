@@ -18,12 +18,12 @@ import com.google.android.material.snackbar.Snackbar
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private lateinit var viewModel: NewsViewModel
-    private val TAG = "ArticleFragment"
+    private val tag = "ArticleFragment"
     private lateinit var article: Article
 
     private var _binding: FragmentArticleBinding? = null
     private val binding: FragmentArticleBinding
-        get() = _binding ?: throw RuntimeException("$TAG is null")
+        get() = _binding ?: throw RuntimeException("$tag is null")
 
 
     override fun onCreateView(
@@ -45,6 +45,13 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
+        viewModel.getSavedNews().observe(viewLifecycleOwner) {
+            for (savedArticle in it) {
+                if (savedArticle.url == article.url) {
+                    binding.fab.setImageResource(R.drawable.ic_favorite_added)
+                }
+            }
+        }
 
         binding.webView.apply {
             webViewClient = WebViewClient()
@@ -53,6 +60,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
         binding.fab.setOnClickListener {
             viewModel.saveArticle(article)
+
             Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
         }
     }

@@ -20,11 +20,11 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
-    private val TAG = "FragmentSavedNewsBinding"
+    private val tag = "FragmentSavedNewsBinding"
 
     private var _binding: FragmentSavedNewsBinding? = null
     private val binding: FragmentSavedNewsBinding
-        get() = _binding ?: throw RuntimeException("$TAG is null")
+        get() = _binding ?: throw RuntimeException("$tag is null")
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -28,11 +28,11 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
-    private val TAG = "SearchNewsFragment"
+    private val tag = "SearchNewsFragment"
 
     private var _binding: FragmentSearchNewsBinding? = null
     private val binding: FragmentSearchNewsBinding
-        get() = _binding ?: throw RuntimeException("$TAG is null")
+        get() = _binding ?: throw RuntimeException("$tag is null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,7 +86,8 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
 
